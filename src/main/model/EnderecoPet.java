@@ -10,12 +10,6 @@ public class EnderecoPet {
     public EnderecoPet() {
     }
 
-    public EnderecoPet(int numeroCasa, String cidade, String rua) {
-        this.numeroCasa = numeroCasa;
-        this.cidade = cidade;
-        this.rua = rua;
-    }
-
     public int getNumeroCasa() {
         return numeroCasa;
     }
@@ -41,5 +35,14 @@ public class EnderecoPet {
     public void setRua(String rua) {
         ValidacoesUtils.validarUltimate(rua);
         this.rua = rua;
+    }
+
+    @Override
+    public String toString() {
+        return "EnderecoPet{" +
+                "numeroCasa=" + numeroCasa +
+                ", cidade='" + cidade + '\'' +
+                ", rua='" + rua + '\'' +
+                '}';
     }
 }
