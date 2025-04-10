@@ -12,7 +12,10 @@ import java.util.Scanner;
 import static repository.FormularioLeitor.lerPerguntas;
 
 public class CadastrarPet {
-    public void cadastrarPet() {
+
+    private static final SalvarPet salvarPet = new SalvarPet();
+
+    public static void cadastrarPet() {
         Scanner scanner = new Scanner(System.in);
         Pet pet = new Pet();
         List<String> perguntas = lerPerguntas();
@@ -38,17 +41,15 @@ public class CadastrarPet {
                 System.out.println(perguntas.get(1));
                 System.out.print(">>> ");
 
-                String tipoAux = scanner.next();
+                String tipoAux = scanner.nextLine().trim().toLowerCase();
                 ValidacoesUtils.validarTipoPet(tipoAux);
 
-                if (tipoAux.charAt(0) == 'c') {
+                if (tipoAux.startsWith("c")) {
                     pet.setTipo(Tipo.CACHORRO);
-                    tipoValido = true;
-                } else if (tipoAux.charAt(0) == 'g') {
+                } else {
                     pet.setTipo(Tipo.GATO);
-                    tipoValido = true;
                 }
-
+                tipoValido = true;
 
             } catch (IllegalArgumentException e) {
                 System.err.println("Error: " + e.getMessage());
@@ -65,20 +66,19 @@ public class CadastrarPet {
                 String sexoAux = String.valueOf(scanner.next());
                 ValidacoesUtils.validarSexoPet(sexoAux);
 
-                if (sexoAux.charAt(0) == 'm') {
+                if (sexoAux.startsWith("m")) {
                     pet.setSexo(Sexo.MACHO);
-                    sexoValido = true;
-                } else if (sexoAux.charAt(0) == 'f') {
+                } else {
                     pet.setSexo(Sexo.FEMEA);
-                    sexoValido = true;
                 }
+                sexoValido = true;
 
             } catch (IllegalArgumentException e) {
                 System.err.println("Error: " + e.getMessage());
             }
         }
 
-         // PERGUNTA 4 - ENDEREÇO
+        // PERGUNTA 4 - ENDEREÇO
         boolean enderecoValido = false;
         while (!enderecoValido) {
             try {
@@ -132,6 +132,8 @@ public class CadastrarPet {
             }
         }
 
+        scanner.nextLine();
+
         // PERGUNTA - RAÇA
         boolean racaValida = false;
         while (!racaValida) {
@@ -145,6 +147,9 @@ public class CadastrarPet {
             }
         }
 
+        salvarPet.salvarPet(pet);
+        System.out.println("O seu pet foi cadastrado com sucesso.");
+        System.out.println("------------------------------------------------------------------------------------");
 
     }
 }
