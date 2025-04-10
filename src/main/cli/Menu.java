@@ -1,5 +1,7 @@
 package cli;
 
+import service.CadastrarPet;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -26,11 +28,13 @@ public class Menu {
 
                 if (resp >= 1 && resp <= 6) {
                     flag = true;
-                } else {
-                    System.err.println("Por favor, insira um número");
-                    scanner.nextLine();
                 }
+
+            } else {
+                System.err.println("Por favor, insira um número");
+                scanner.nextLine();
             }
+
         }
 
         return resp;
@@ -38,7 +42,18 @@ public class Menu {
 
 
     public static void menuPrincipal() {
-        rodarMenu();
+        boolean flag = false;
 
+        while (!flag) {
+            switch (rodarMenu()) {
+                case 1:
+                    CadastrarPet.cadastrarPet();
+                    break;
+                case 6:
+                    System.out.println("Obrigado!");
+                    flag = true;
+                    break;
+            }
+        }
     }
 }

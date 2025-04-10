@@ -31,7 +31,7 @@ public class ValidacoesUtils {
     }
 
     public static void validarUltimate(String input) {
-        String regex = "^[a-zA-Z\\s]+$";
+        String regex = "^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$";
 
         if (input == null || !input.matches(regex)) {
             throw new IllegalArgumentException("Nada números ou caracteres especiais.");
@@ -41,8 +41,9 @@ public class ValidacoesUtils {
     public static void validarTipoPet(String petTipo) {
         if (petTipo == null || petTipo.trim().isBlank()) throw new IllegalArgumentException("O tipo não pode ser vázio.");
 
-        char primeiraLetra = petTipo.toLowerCase().charAt(0);
-        if (primeiraLetra != 'c' && primeiraLetra != 'g') {
+        String primeiraLetra = petTipo.toLowerCase();
+        if (!(primeiraLetra.startsWith("c") || primeiraLetra.startsWith("g")
+                || primeiraLetra.equals("cachorro") || primeiraLetra.equals("gato"))) {
             throw new IllegalArgumentException("Tipo inválido. Apenas cachorro ou gato!");
         }
     }
@@ -50,18 +51,18 @@ public class ValidacoesUtils {
     public static void validarSexoPet(String petSexo) {
         if (petSexo == null || petSexo.trim().isBlank()) throw new IllegalArgumentException("O sexo não pode ser vázio.");
 
-        char primeiraLetra = petSexo.toLowerCase().charAt(0);
-        if (primeiraLetra != 'm' && primeiraLetra != 'f') {
+        String primeiraLetra = petSexo.toLowerCase();
+        if (!(primeiraLetra.startsWith("m") || primeiraLetra.equals("f")
+                || primeiraLetra.equals("macho") || primeiraLetra.equals("femea"))) {
             throw new IllegalArgumentException("Sexo inválido. Apenas macho ou femea!");
         }
     }
 
 
-    public static int validacaoNumero(int numero) {
+    public static void validacaoNumero(int numero) {
         if (numero < 0) {
             throw new IllegalArgumentException("Digite corretamente, por favor.");
         }
 
-        return numero;
     }
 }
