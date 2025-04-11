@@ -4,7 +4,7 @@ public enum Sexo {
     MACHO("Macho"),
     FEMEA("Femea");
 
-    private String nome;
+    private final String nome;
 
     Sexo(String nome) {
         this.nome = nome;
@@ -14,7 +14,4 @@ public enum Sexo {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }
