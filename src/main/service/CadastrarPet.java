@@ -15,11 +15,13 @@ public class CadastrarPet {
 
     private static final SalvarPet salvarPet = new SalvarPet();
 
+
     public static void cadastrarPet() {
         Scanner scanner = new Scanner(System.in);
         Pet pet = new Pet();
         List<String> perguntas = lerPerguntas();
         EnderecoPet enderecoPet = new EnderecoPet();
+
 
         // PERGUNTA 1 - NOME E SOBRENOME
         boolean nomeValido = false;
@@ -27,8 +29,16 @@ public class CadastrarPet {
             try {
                 System.out.println(perguntas.getFirst());
                 System.out.print(">>> ");
-                pet.setNome(scanner.nextLine());
+                String nomeAux = scanner.nextLine();
+
+                if (nomeAux.isBlank()) {
+                    pet.setNome(pet.getNAO_INFORMADO());
+                    nomeValido = true;
+                } else {
+                    pet.setNome(nomeAux);
+                }
                 nomeValido = true;
+
             } catch (IllegalArgumentException e) {
                 System.err.println("Error: " + e.getMessage());
             }
@@ -41,7 +51,7 @@ public class CadastrarPet {
                 System.out.println(perguntas.get(1));
                 System.out.print(">>> ");
 
-                String tipoAux = scanner.nextLine().trim().toLowerCase();
+                String tipoAux = scanner.nextLine();
                 ValidacoesUtils.validarTipoPet(tipoAux);
 
                 if (tipoAux.startsWith("c")) {
@@ -49,6 +59,7 @@ public class CadastrarPet {
                 } else {
                     pet.setTipo(Tipo.GATO);
                 }
+
                 tipoValido = true;
 
             } catch (IllegalArgumentException e) {
@@ -63,7 +74,7 @@ public class CadastrarPet {
                 System.out.println(perguntas.get(2));
                 System.out.print(">>> ");
 
-                String sexoAux = String.valueOf(scanner.next());
+                String sexoAux = scanner.nextLine();
                 ValidacoesUtils.validarSexoPet(sexoAux);
 
                 if (sexoAux.startsWith("m")) {
@@ -86,9 +97,14 @@ public class CadastrarPet {
 
                 System.out.print("> ");
                 System.out.print("Numero da Casa: ");
-                enderecoPet.setNumeroCasa(scanner.nextInt());
+                String numeroCasaString = scanner.nextLine();
 
-                scanner.nextLine();
+                if (numeroCasaString.isBlank()) {
+                    enderecoPet.setNumeroCasa(null);
+                    enderecoValido = true;
+                } else {
+                    enderecoPet.setNumeroCasa(Integer.valueOf(numeroCasaString));
+                }
 
                 System.out.print("> ");
                 System.out.print("Cidade: ");
@@ -100,11 +116,11 @@ public class CadastrarPet {
 
                 pet.setEnderecoPet(enderecoPet);
                 enderecoValido = true;
+
             } catch (IllegalArgumentException e) {
                 System.err.println("Error: " + e.getMessage());
             }
         }
-
 
         // PERGUNGA 5 - IDADE
         boolean idadeValida = false;
@@ -112,8 +128,16 @@ public class CadastrarPet {
             try {
                 System.out.println(perguntas.get(4));
                 System.out.print(">>> ");
-                pet.setIdade(scanner.nextInt());
+                String idadeString = scanner.nextLine();
+
+                if (idadeString.isBlank()){
+                    pet.setIdade(null);
+                    idadeValida = true;
+                } else {
+                    pet.setIdade(Integer.valueOf(idadeString));
+                }
                 idadeValida = true;
+
             } catch (IllegalArgumentException e) {
                 System.err.println("Error: " + e.getMessage());
             }
@@ -125,14 +149,21 @@ public class CadastrarPet {
             try {
                 System.out.println(perguntas.get(5));
                 System.out.print(">>> ");
-                pet.setPeso(scanner.nextDouble());
+                String pesoString = scanner.nextLine();
+
+                if (pesoString.isBlank()) {
+                    pet.setPeso(null);
+                    pesovalido = true;
+                } else {
+                    pet.setPeso(Double.parseDouble(pesoString));
+                }
                 pesovalido = true;
+
             } catch (IllegalArgumentException e) {
                 System.err.println("Error: " + e.getMessage());
             }
         }
 
-        scanner.nextLine();
 
         // PERGUNTA - RAÇA
         boolean racaValida = false;
@@ -140,7 +171,13 @@ public class CadastrarPet {
             try {
                 System.out.println(perguntas.get(6));
                 System.out.print(">>> ");
-                pet.setRaca(scanner.nextLine());
+                String racaAux = scanner.nextLine();
+                if (racaAux.isBlank()){
+                    pet.setRaca(pet.getNAO_INFORMADO());
+                    racaValida = true;
+                } else {
+                    pet.setRaca(racaAux);
+                }
                 racaValida = true;
             } catch (IllegalArgumentException e) {
                 System.err.println("Error: " + e.getMessage());

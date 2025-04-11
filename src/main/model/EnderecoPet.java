@@ -3,14 +3,14 @@ package model;
 import util.ValidacoesUtils;
 
 public class EnderecoPet {
-    private int numeroCasa;
+    private Integer numeroCasa;
     private String cidade;
     private String rua;
 
     public EnderecoPet() {
     }
 
-    public int getNumeroCasa() {
+    public Integer getNumeroCasa() {
         return numeroCasa;
     }
 
@@ -22,8 +22,10 @@ public class EnderecoPet {
         return rua;
     }
 
-    public void setNumeroCasa(int numeroCasa) {
-        ValidacoesUtils.validacaoNumero(numeroCasa);
+    public void setNumeroCasa(Integer numeroCasa) {
+        if (numeroCasa != null) {
+            ValidacoesUtils.validarNumeroCasa(numeroCasa);
+        }
         this.numeroCasa = numeroCasa;
     }
 

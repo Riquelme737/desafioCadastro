@@ -19,18 +19,28 @@ public class SalvarPet {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(arquivo))) {
             bufferedWriter.write("1 - " + pet.getNome());
             bufferedWriter.newLine();
+
             bufferedWriter.write("2 - " + pet.getTipo().getNome());
             bufferedWriter.newLine();
+
             bufferedWriter.write("3 - " + pet.getSexo().getNome());
             bufferedWriter.newLine();
-            bufferedWriter.write("4 - " + pet.getEnderecoPet().getRua() +
+
+            if (pet.getEnderecoPet().getNumeroCasa() == null) bufferedWriter.write("4 - " +
+                    pet.getEnderecoPet().getRua() + ", " + pet.getNAO_INFORMADO() + ", " + pet.getEnderecoPet().getCidade());
+            else bufferedWriter.write("4 - " + pet.getEnderecoPet().getRua() +
                     ", " + pet.getEnderecoPet().getNumeroCasa() +
                     ", " + pet.getEnderecoPet().getCidade());
             bufferedWriter.newLine();
-            bufferedWriter.write("5 - " + pet.getIdade() + " anos");
+
+            if (pet.getIdade() == null) bufferedWriter.write("5 - " + pet.getNAO_INFORMADO());
+            else bufferedWriter.write("5 - " + pet.getIdade() + " anos");
             bufferedWriter.newLine();
-            bufferedWriter.write("6 - " + pet.getPeso() + "kg");
+
+            if (pet.getPeso() == null) bufferedWriter.write("6 - " + pet.getNAO_INFORMADO());
+            else bufferedWriter.write("6 - " + pet.getPeso() + "kg");
             bufferedWriter.newLine();
+
             bufferedWriter.write("7 - " + pet.getRaca());
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());

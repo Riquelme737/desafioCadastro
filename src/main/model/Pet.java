@@ -10,73 +10,81 @@ public class Pet {
     private Tipo tipo;
     private Sexo sexo;
     private EnderecoPet enderecoPet;
-    private int idade;
-    private double peso;
+    private Integer idade;
+    private Double peso;
     private String raca;
-    private final String NAO_INFORMADO = "Não informado";
 
     public Pet() {
+    }
+
+    public String getNAO_INFORMADO() {
+        return "Não informado";
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        ValidacoesUtils.validacaoNomeCompleto(nome);
-        this.nome = nome;
-    }
-
     public Tipo getTipo() {
         return tipo;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
     }
 
     public Sexo getSexo() {
         return sexo;
     }
 
-    public void setSexo(Sexo sexo) {
-        this.sexo = sexo;
+    public Integer getIdade() {
+        return idade;
     }
 
     public EnderecoPet getEnderecoPet() {
         return enderecoPet;
     }
 
-    public void setEnderecoPet(EnderecoPet enderecoPet) {
-        this.enderecoPet = enderecoPet;
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public void setIdade(int idade) {
-        ValidacoesUtils.validacaoIdade(idade);
-        this.idade = idade;
-    }
-
-    public double getPeso() {
+    public Double getPeso() {
         return peso;
-    }
-
-    public void setPeso(double peso) {
-        ValidacoesUtils.validacaoPeso(peso);
-        this.peso = peso;
     }
 
     public String getRaca() {
         return raca;
     }
 
+    public void setNome(String nome) {
+        ValidacoesUtils.validarNomeCompleto(nome);
+        this.nome = nome;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
+    }
+
+    public void setEnderecoPet(EnderecoPet enderecoPet) {
+        this.enderecoPet = enderecoPet;
+    }
+
+    public void setIdade(Integer idade) {
+        if (idade != null) {
+            ValidacoesUtils.validarIdade(idade);
+        }
+        this.idade = idade;
+    }
+
+    public void setPeso(Double peso) {
+        if (peso != null) {
+            ValidacoesUtils.validarPeso(peso);
+        }
+        this.peso = peso;
+    }
+
     public void setRaca(String raca) {
         ValidacoesUtils.validarUltimate(raca);
         this.raca = raca;
     }
+
 
     @Override
     public String toString() {
