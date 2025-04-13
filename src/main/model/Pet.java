@@ -2,6 +2,7 @@ package model;
 
 import model.enums.Sexo;
 import model.enums.Tipo;
+import service.PetService;
 import util.ValidacoesUtils;
 
 public class Pet {
@@ -68,14 +69,14 @@ public class Pet {
 
     public void setIdade(Integer idade) {
         if (idade != null) {
-            ValidacoesUtils.validarIdade(idade);
+            PetService.validarIdade(idade);
         }
         this.idade = idade;
     }
 
     public void setPeso(Double peso) {
         if (peso != null) {
-            ValidacoesUtils.validarPeso(peso);
+            PetService.validarPeso(peso);
         }
         this.peso = peso;
     }
@@ -85,17 +86,40 @@ public class Pet {
         this.raca = raca;
     }
 
+    public String toFileFormat() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("1 - ").append(getNome()).append("\n");
+
+        sb.append("2 - ").append(getTipo().getNome()).append("\n");
+
+        sb.append("3 - ").append(getSexo().getNome()).append("\n");
+
+        sb.append("4 - ");
+        sb.append(getEnderecoPet().getRua()).append(", ");
+        if (getEnderecoPet().getNumeroCasa() == null) {
+            sb.append(getNAO_INFORMADO());
+        } else {
+            sb.append(getEnderecoPet().getNumeroCasa());
+        }
+        sb.append(", ");
+        sb.append(getEnderecoPet().getCidade()).append("\n");
+
+        sb.append("5 - ");
+        if (getIdade() == null) sb.append(getNAO_INFORMADO()).append("\n");
+        else sb.append(getIdade()).append(" anos").append("\n");
+
+        sb.append("6 - ");
+        if (getPeso() == null) sb.append(getNAO_INFORMADO()).append("\n");
+        else sb.append(getPeso()).append("kg").append("\n");
+
+        sb.append("7 - ").append(getRaca()).append("\n");
+        return sb.toString();
+    }
+
 
     @Override
     public String toString() {
-        return "Pet{" +
-                "nome='" + nome + '\'' +
-                ", tipo=" + tipo +
-                ", sexo=" + sexo +
-                ", enderecoPet=" + enderecoPet +
-                ", idade=" + idade +
-                ", peso=" + peso +
-                ", raca='" + raca + '\'' +
-                '}';
+        return getNome() + " - " + tipo.getNome() + " - " + sexo.getNome() + " - "
+                + enderecoPet + " - " + idade + " anos - " + peso + "kg - " + raca;
     }
 }

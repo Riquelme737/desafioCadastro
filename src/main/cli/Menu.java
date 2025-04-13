@@ -18,7 +18,7 @@ public class Menu {
             System.out.println("|[2] Alterar dados do pet cadastrado\t\t\t\t|");
             System.out.println("|[3] Deletar um pet cadastrado\t\t\t\t\t\t|");
             System.out.println("|[4] Listar todos os pets cadastrado\t\t\t\t|");
-            System.out.println("|[5]Listar por algum critério (idade, nome, raça)\t|");
+            System.out.println("|[5] Listar por algum critério (idade, nome, raça)\t|");
             System.out.println("|[6] Sair\t\t\t\t\t\t\t\t\t\t\t|");
             System.out.println("|=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=|");
             System.out.print("---> ");

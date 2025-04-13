@@ -4,7 +4,7 @@ import model.EnderecoPet;
 import model.Pet;
 import model.enums.Sexo;
 import model.enums.Tipo;
-import util.ValidacoesUtils;
+import repository.PetFileRepository;
 
 import java.util.List;
 import java.util.Scanner;
@@ -13,8 +13,7 @@ import static repository.FormularioLeitor.lerPerguntas;
 
 public class CadastrarPet {
 
-    private static final SalvarPet salvarPet = new SalvarPet();
-
+    private static final PetFileRepository PET_FILE_REPOSITORY = new PetFileRepository();
 
     public static void cadastrarPet() {
         Scanner scanner = new Scanner(System.in);
@@ -51,8 +50,8 @@ public class CadastrarPet {
                 System.out.println(perguntas.get(1));
                 System.out.print(">>> ");
 
-                String tipoAux = scanner.nextLine();
-                ValidacoesUtils.validarTipoPet(tipoAux);
+                String tipoAux = scanner.nextLine().toLowerCase();
+                PetService.validarTipoPet(tipoAux);
 
                 if (tipoAux.startsWith("c")) {
                     pet.setTipo(Tipo.CACHORRO);
@@ -74,8 +73,8 @@ public class CadastrarPet {
                 System.out.println(perguntas.get(2));
                 System.out.print(">>> ");
 
-                String sexoAux = scanner.nextLine();
-                ValidacoesUtils.validarSexoPet(sexoAux);
+                String sexoAux = scanner.nextLine().toLowerCase();
+                PetService.validarSexoPet(sexoAux);
 
                 if (sexoAux.startsWith("m")) {
                     pet.setSexo(Sexo.MACHO);
@@ -122,7 +121,7 @@ public class CadastrarPet {
             }
         }
 
-        // PERGUNGA 5 - IDADE
+        // PERGUNTA 5 - IDADE
         boolean idadeValida = false;
         while (!idadeValida) {
             try {
@@ -184,7 +183,7 @@ public class CadastrarPet {
             }
         }
 
-        salvarPet.salvarPet(pet);
+        PET_FILE_REPOSITORY.salvarPet(pet);
         System.out.println("O seu pet foi cadastrado com sucesso.");
         System.out.println("------------------------------------------------------------------------------------");
 

@@ -24,18 +24,16 @@ public class EnderecoPet {
 
     public void setNumeroCasa(Integer numeroCasa) {
         if (numeroCasa != null) {
-            ValidacoesUtils.validarNumeroCasa(numeroCasa);
+            ValidacoesUtils.validarNumeroPositivo(numeroCasa);
         }
         this.numeroCasa = numeroCasa;
     }
 
     public void setCidade(String cidade) {
-        ValidacoesUtils.validarUltimate(cidade);
         this.cidade = cidade;
     }
 
     public void setRua(String rua) {
-        ValidacoesUtils.validarUltimate(rua);
         this.rua = rua;
     }
 
@@ -44,7 +42,6 @@ public class EnderecoPet {
         return "EnderecoPet{" +
                 "numeroCasa=" + numeroCasa +
                 ", cidade='" + cidade + '\'' +
-                ", rua='" + rua + '\'' +
-                '}';
+                ", rua='" + rua;
     }
 }
