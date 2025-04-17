@@ -39,9 +39,6 @@ public class EnderecoPet {
 
     @Override
     public String toString() {
-        return "EnderecoPet{" +
-                "numeroCasa=" + numeroCasa +
-                ", cidade='" + cidade + '\'' +
-                ", rua='" + rua;
+        return getRua() + ", " + getNumeroCasa() + " - " + getCidade();
     }
 }

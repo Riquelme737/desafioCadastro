@@ -22,10 +22,11 @@ public class ValidacoesUtils {
         }
     }
 
-    public static void validarNumeroPositivo(int numero) {
+    public static int validarNumeroPositivo(int numero) {
         if (numero < 0) {
-            throw new IllegalArgumentException("Número não pode ser negativo1");
+            throw new IllegalArgumentException("Número não pode ser negativo!");
         }
 
+        return numero;
     }
 }

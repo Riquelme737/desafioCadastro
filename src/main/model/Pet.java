@@ -116,10 +116,9 @@ public class Pet {
         return sb.toString();
     }
 
-
     @Override
     public String toString() {
         return getNome() + " - " + tipo.getNome() + " - " + sexo.getNome() + " - "
-                + enderecoPet + " - " + idade + " anos - " + peso + "kg - " + raca;
+                + getEnderecoPet() + " - " + getIdade() + " anos - " + getPeso() + "kg - " + getRaca();
     }
 }

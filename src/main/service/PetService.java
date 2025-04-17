@@ -2,12 +2,14 @@ package service;
 
 public class PetService {
 
-    public static void validarTipoPet(String petTipo) {
+    public static String validarTipoPet(String petTipo) {
         String primeiraLetra = petTipo.toLowerCase();
         if (!(primeiraLetra.startsWith("c") || primeiraLetra.startsWith("g")
                 || primeiraLetra.equals("cachorro") || primeiraLetra.equals("gato"))) {
             throw new IllegalArgumentException("Tipo inválido. Apenas cachorro ou gato!");
         }
+
+        return petTipo;
     }
 
     public static void validarSexoPet(String petSexo) {

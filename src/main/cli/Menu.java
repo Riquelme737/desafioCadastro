@@ -1,5 +1,6 @@
 package cli;
 
+import service.BuscarPet;
 import service.CadastrarPet;
 
 import java.util.Scanner;
@@ -41,6 +42,8 @@ public class Menu {
     }
 
 
+
+
     public static void menuPrincipal() {
         boolean flag = false;
 
@@ -49,10 +52,15 @@ public class Menu {
                 case 1:
                     CadastrarPet.cadastrarPet();
                     break;
+                case 2:
+                    BuscarPet.menu();
+                    break;
                 case 6:
                     System.out.println("Obrigado!");
                     flag = true;
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + rodarMenu());
             }
         }
     }
