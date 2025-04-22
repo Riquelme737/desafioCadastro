@@ -32,4 +32,20 @@ public class PetService {
         }
         return petIdade;
     }
+
+    public static String validarRaca(String raca) {
+        String regex = "^[a-zA-Z\\s-]*$";
+        if (!raca.matches(regex)) {
+            throw new IllegalArgumentException("Escreva corretamente.");
+        }
+        return raca;
+    }
+
+    public static String validarRua_Cidade(String input) {
+        String regex = "^[\\p{L}0-9\\s\\-.]+$";
+        if (!input.matches(regex)) {
+            throw new IllegalArgumentException("Escreva corretamente.");
+        }
+        return input;
+    }
 }

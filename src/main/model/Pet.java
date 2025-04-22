@@ -54,6 +54,8 @@ public class Pet {
         return raca;
     }
 
+    public int getId() { return id;}
+
     public void setNome(String nome) {
         ValidacoesUtils.validarNomeCompleto(nome);
         this.nome = nome;
@@ -86,7 +88,6 @@ public class Pet {
     }
 
     public void setRaca(String raca) {
-        ValidacoesUtils.validarUltimate(raca);
         this.raca = raca;
     }
 
@@ -129,13 +130,20 @@ public class Pet {
        sb.append(nome).append(" - ");
        sb.append(tipo.getNome()).append(" - ");
        sb.append(sexo.getNome()).append(" - ");
-       sb.append(enderecoPet.getRua()).append(", ");
+
+       if (enderecoPet.getRua() == null) sb.append(getEnderecoPet().getRua());
+       else sb.append(enderecoPet.getRua()).append(", ");
+
        if (enderecoPet.getNumeroCasa() == null) sb.append(getNAO_INFORMADO()).append(" - ");
        else sb.append(enderecoPet.getNumeroCasa()).append(" - ");
-       sb.append(enderecoPet.getCidade()).append(" - ");
+
+       if (enderecoPet.getCidade() == null) sb.append(getEnderecoPet().getCidade());
+       else sb.append(enderecoPet.getCidade()).append(" - ");
+
+
        if (idade == null) sb.append(getNAO_INFORMADO()).append(" - ");
        else sb.append(idade).append(" anos - ");
-       if (peso == null) sb.append(getNAO_INFORMADO()).append(" - 2");
+       if (peso == null) sb.append(getNAO_INFORMADO()).append(" - ");
        else sb.append(peso).append("kg - ");
        sb.append(raca);
 

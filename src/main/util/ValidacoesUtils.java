@@ -16,7 +16,7 @@ public class ValidacoesUtils {
     }
 
     public static String validarUltimate(String input) {
-        String regex = "^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$";
+        String regex = "^[a-zA-Z0-9 ]+$";
 
         if (!input.trim().matches(regex)) {
             throw new IllegalArgumentException("Nada números ou caracteres especiais.");
