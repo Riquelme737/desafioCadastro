@@ -4,6 +4,7 @@ import model.EnderecoPet;
 import model.Pet;
 import model.enums.Sexo;
 import model.enums.Tipo;
+import util.Constantes;
 import util.ValidacoesUtils;
 
 import java.io.BufferedReader;
@@ -11,134 +12,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class BuscarPet {
-    private final static String PETS_CADASTRADOS = "src/resources/petsCadastrados";
     private final static Scanner scanner = new Scanner(System.in);
 
-    public static void menu() {
-        System.out.println("Cachorro ou Gato?");
-        System.out.print(">>> ");
-        String tipoCriterio = PetService.validarTipoPet(scanner.nextLine());
-
-        opcoesCriterios();
-        int criterioEscolhido1 = ValidacoesUtils.validarNumeroPositivo(scanner.nextInt());
-
-        opcoesCriterios();
-        int criterioEscolhido2 = ValidacoesUtils.validarNumeroPositivo(scanner.nextInt());
-
-        Tipo generoPet;
-        if (tipoCriterio.equalsIgnoreCase("cachorro")) {
-            generoPet = Tipo.CACHORRO;
-        } else if (tipoCriterio.equalsIgnoreCase("gato")) {
-            generoPet = Tipo.GATO;
-        } else {
-            System.err.println("Opção inválida! Apenas cachorro ou gato!");
-            return;
-        }
-
-        List<Pet> petList = buscarPets().stream()
-                .filter(pet -> pet.getTipo() == generoPet)
-                .toList();
-
-        if (criterioEscolhido1 == 1 || criterioEscolhido2 == 1) {
-            System.out.println("Digite o nome ou sobrenome do pet");
-            System.out.print(">>> ");
-            scanner.nextLine();
-            String nomeSugerido = scanner.nextLine().toLowerCase().trim();
-
-            petList = filtarPorNome(nomeSugerido, petList);
-        }
-
-        if (criterioEscolhido1 == 2 || criterioEscolhido2 == 2) {
-            System.out.println("Digite o gênero do pet");
-            System.out.print(">>> ");
-            scanner.nextLine();
-            String generoSugerido = scanner.nextLine().toLowerCase().trim();
-
-            petList = filtarPorGenero(generoSugerido, petList);
-        }
-
-        if (criterioEscolhido1 == 3 || criterioEscolhido2 == 3) {
-            System.out.println("Digite a idade do pet");
-            System.out.print(">>> ");
-            int idadeSugerida = scanner.nextInt();
-
-            petList = filtarPorIdade(idadeSugerida, petList);
-        }
-
-        if (criterioEscolhido1 == 4 || criterioEscolhido2 == 4) {
-            System.out.println("Digite o peso do pet");
-            System.out.print(">>> ");
-            scanner.nextLine();
-            double peso = scanner.nextDouble();
-
-            petList = filtrarPorPeso(peso, petList);
-        }
-
-        if (criterioEscolhido1 == 5 || criterioEscolhido2 == 5) {
-            System.out.println("Digite a raça do pet");
-            System.out.print(">>> ");
-            scanner.nextLine();
-            String raca = scanner.nextLine().toLowerCase().trim();
-
-            petList = filtrarPorRaca(raca, petList);
-        }
-
-        if (criterioEscolhido1 == 6 || criterioEscolhido2 == 6) {
-            System.out.println("[1] Rua");
-            System.out.println("[2] Numero da casa");
-            System.out.println("[3] cidade");
-            System.out.print(">>> ");
-            scanner.nextLine();
-            int escolha = scanner.nextInt();
-
-            if (escolha == 1) {
-                System.out.println("Nome da rua");
-                System.out.print(">>> ");
-                scanner.nextLine();
-                String rua = scanner.nextLine();
-                petList = filtrarPorRua(rua, petList);
-            }
-
-            if (escolha == 2) {
-                System.out.println("Número da casa");
-                System.out.print(">>> ");
-                scanner.nextLine();
-                int numeroCasa = scanner.nextInt();
-                petList = filtrarPorNumeroCasa(numeroCasa, petList);
-            }
-
-            if (escolha == 3) {
-                System.out.println("Nome da cidade");
-                System.out.print(">>> ");
-                scanner.nextLine();
-                String cidade = scanner.nextLine();
-                petList = filtrarPorCidade(cidade, petList);
-            }
-        }
-
-        for (Pet pet : petList) {
-            System.out.println(pet);
-        }
-    }
-
-    private static void opcoesCriterios() {
-        System.out.println("[1] Nome ou sobrenome");
-        System.out.println("[2] Sexo");
-        System.out.println("[3] Idade");
-        System.out.println("[4] Peso");
-        System.out.println("[5] Raça");
-        System.out.println("[6] Endereço");
-        System.out.println("[0] Nenhuma das opções");
-        System.out.print(">>> ");
-    }
-
-
     public static List<Pet> buscarPets() {
-        File[] arquivo = new File(PETS_CADASTRADOS).listFiles(nome -> nome.getName().endsWith(".TXT"));
+        File[] arquivo = new File(Constantes.PETS_CADASTRADOS).listFiles(nome -> nome.getName().endsWith(".TXT"));
         List<Pet> petList = null;
 
         if (arquivo != null) {
@@ -154,18 +36,19 @@ public class BuscarPet {
                     String raca = br.readLine().split(" - ")[1];
 
                     EnderecoPet enderecoPet = new EnderecoPet();
+                    Pet pet = new Pet();
+
                     String[] enderecoPartes = endereco.split(", ");
                     enderecoPet.setRua(enderecoPartes[0].trim());
-                    enderecoPet.setNumeroCasa(Integer.valueOf(enderecoPartes[1].trim()));
-                    enderecoPet.setCidade(enderecoPartes[2].trim());
-
-                    Pet pet = new Pet();
+                    enderecoPet.setNumeroCasa(!enderecoPartes[1].equalsIgnoreCase("Não informado") ? Integer.valueOf(enderecoPartes[1]) : null);
+                    enderecoPet.setCidade(enderecoPartes[2]);
                     pet.setEnderecoPet(enderecoPet);
                     pet.setNome(nome);
                     pet.setTipo(Tipo.valueOf(especie.toUpperCase()));
                     pet.setSexo(Sexo.valueOf(genero.toUpperCase()));
-                    pet.setIdade(Integer.valueOf(idade.split(" ")[0]));
-                    pet.setPeso(Double.valueOf(peso.split("kg")[0]));
+
+                    pet.setIdade(!idade.equalsIgnoreCase("Não informado") ? Integer.valueOf(idade.split(" ")[0]) : null);
+                    pet.setPeso(!peso.equalsIgnoreCase("Não informado") ? Double.valueOf(peso.split("kg")[0]) : null);
                     pet.setRaca(raca);
 
                     petList.add(pet);
@@ -177,53 +60,104 @@ public class BuscarPet {
         return petList;
     }
 
-    public static List<Pet> filtarPorNome(String nomeSugerido, List<Pet> petList) {
-        return petList.stream()
-                .filter(pet -> pet.getNome().toLowerCase().contains(nomeSugerido))
-                .toList();
-    }
+    public static List<Pet> aplicarFiltro(List<Pet> petList, int criterio) {
+        switch (criterio) {
+            case 1:
+                System.out.println("Digite o nome ou sobrenome do pet");
+                System.out.print(">>> ");
+                String nomeFiltro = scanner.nextLine().trim().toLowerCase();
+                return petList.stream()
+                        .filter(pet -> pet.getNome().toLowerCase().trim().contains(nomeFiltro))
+                        .toList();
 
-    public static List<Pet> filtarPorGenero(String generoSugerido, List<Pet> petList) {
-        return petList.stream()
-                .filter(pet -> pet.getSexo().getNome().equalsIgnoreCase(generoSugerido))
-                .toList();
-    }
+            case 2:
+                System.out.println("Digite o sexo do pet");
+                System.out.print(">>> ");
+                String sexo = scanner.nextLine().trim();
+                return petList.stream()
+                        .filter(pet -> pet.getSexo().getNome().equalsIgnoreCase(sexo))
+                        .toList();
 
-    public static List<Pet> filtarPorIdade(int idadeSugerida, List<Pet> petList) {
-        return petList.stream()
-                .filter(pet -> pet.getIdade() == idadeSugerida)
-                .toList();
-    }
+            case 3:
+                System.out.println("Digite a idade do pet");
+                System.out.print(">>> ");
+                try {
+                    int idadeFiltro = ValidacoesUtils.validarNumeroPositivo(scanner.nextInt());
+                    scanner.nextLine();
+                    return petList.stream()
+                            .filter(pet -> pet.getIdade() == idadeFiltro)
+                            .toList();
+                } catch (InputMismatchException | IllegalArgumentException e) {
+                    System.err.println("Erro: " + e.getMessage());
+                    scanner.nextLine();
+                    return petList;
+                }
 
-    public static List<Pet> filtrarPorPeso(double pesoSugerido, List<Pet> petList) {
-        return petList.stream()
-                .filter(pet -> pet.getPeso() == pesoSugerido)
-                .toList();
-    }
+            case 4:
+                System.out.println("Digite o peso do pet");
+                System.out.print(">>> ");
+                try {
+                    double peso = scanner.nextDouble();
+                    return petList.stream()
+                            .filter(pet -> pet.getPeso() == peso)
+                            .toList();
+                } catch (InputMismatchException | IllegalArgumentException e) {
+                    System.err.println("Erro: " + e.getMessage());
+                    scanner.nextLine();
+                    return petList;
+                }
+            case 5:
+                System.out.println("Digite a raça do pet");
+                System.out.print(">>> ");
+                String raca = scanner.nextLine();
+                return petList.stream()
+                        .filter(pet -> pet.getRaca().equalsIgnoreCase(raca))
+                        .toList();
 
-    public static List<Pet> filtrarPorRaca(String racaSugerida, List<Pet> petList) {
-        return petList.stream()
-                .filter(pet -> pet.getRaca().equalsIgnoreCase(racaSugerida))
-                .toList();
-    }
+            case 6:
+                System.out.println("[1] Rua");
+                System.out.println("[2] Numero da casa");
+                System.out.println("[3] Cidade");
+                System.out.print(">>> ");
+                try {
+                    int escolha = ValidacoesUtils.validarNumeroPositivo(scanner.nextInt());
+                    scanner.nextLine();
+                    if (escolha == 1) {
+                        System.out.println("Nome da rua");
+                        System.out.print(">>> ");
+                        scanner.nextLine();
+                        String rua = scanner.nextLine();
+                        return petList.stream()
+                                .filter(pet -> pet.getEnderecoPet().getRua().contains(rua))
+                                .toList();
 
-    public static List<Pet> filtrarPorRua(String ruaSurgerida, List<Pet> petList) {
-        return petList.stream()
-                .filter(pet -> pet.getEnderecoPet().getRua().contains(ruaSurgerida))
-                .toList();
-    }
+                    } else if (escolha == 2) {
+                        System.out.println("Número da casa");
+                        System.out.print(">>> ");
+                        scanner.nextLine();
+                        int numeroCasa = scanner.nextInt();
+                        return petList.stream()
+                                .filter(pet -> pet.getEnderecoPet().getNumeroCasa() == numeroCasa)
+                                .toList();
 
-    public static List<Pet> filtrarPorNumeroCasa(int numeroSugerido, List<Pet> petList) {
-        return petList.stream()
-                .filter(pet -> pet.getEnderecoPet().getNumeroCasa() == numeroSugerido)
-                .toList();
-    }
+                    } else if (escolha == 3) {
+                        System.out.println("Nome da cidade");
+                        System.out.print(">>> ");
+                        scanner.nextLine();
+                        String cidade = scanner.nextLine();
+                        return petList.stream()
+                                .filter(pet -> pet.getEnderecoPet().getCidade().contains(cidade))
+                                .toList();
 
-    public static List<Pet> filtrarPorCidade(String cidadeSugerida, List<Pet> petList) {
-        return petList.stream()
-                .filter(pet -> pet.getEnderecoPet().getCidade().contains(cidadeSugerida))
-                .toList();
+                    }
+                } catch (InputMismatchException | IllegalArgumentException e) {
+                    System.err.println("Erro: " + e.getMessage());
+                    scanner.nextLine();
+                    return petList;
+                }
+            default:
+                return petList;
+        }
     }
-
 
 }

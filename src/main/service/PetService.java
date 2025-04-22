@@ -8,7 +8,6 @@ public class PetService {
                 || primeiraLetra.equals("cachorro") || primeiraLetra.equals("gato"))) {
             throw new IllegalArgumentException("Tipo inválido. Apenas cachorro ou gato!");
         }
-
         return petTipo;
     }
 
@@ -20,15 +19,17 @@ public class PetService {
         }
     }
 
-    public static void validarPeso(double petPeso) {
+    public static Double validarPeso(double petPeso) {
         if (petPeso > 60 || petPeso < 0.5) {
             throw new IllegalArgumentException("Peso tem que ser entre 0.5 kg ou 60kg");
         }
+        return petPeso;
     }
 
-    public static void validarIdade(int petIdade) {
+    public static Integer validarIdade(int petIdade) {
         if (petIdade <= 0 ||petIdade > 20) {
             throw new IllegalArgumentException("Tem que ser maior que 0 e menor ou igual a 20.");
         }
+        return petIdade;
     }
 }

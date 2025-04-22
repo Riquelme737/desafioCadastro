@@ -14,8 +14,12 @@ public class Pet {
     private Integer idade;
     private Double peso;
     private String raca;
+    private final int id;
+    private static int proximoId = 1;
+
 
     public Pet() {
+        this.id = proximoId++;
     }
 
     public String getNAO_INFORMADO() {
@@ -86,6 +90,7 @@ public class Pet {
         this.raca = raca;
     }
 
+
     public String toFileFormat() {
         StringBuilder sb = new StringBuilder();
         sb.append("1 - ").append(getNome()).append("\n");
@@ -118,7 +123,22 @@ public class Pet {
 
     @Override
     public String toString() {
-        return getNome() + " - " + tipo.getNome() + " - " + sexo.getNome() + " - "
-                + getEnderecoPet() + " - " + getIdade() + " anos - " + getPeso() + "kg - " + getRaca();
+       StringBuilder sb = new StringBuilder();
+
+       sb.append(id).append(". ");
+       sb.append(nome).append(" - ");
+       sb.append(tipo.getNome()).append(" - ");
+       sb.append(sexo.getNome()).append(" - ");
+       sb.append(enderecoPet.getRua()).append(", ");
+       if (enderecoPet.getNumeroCasa() == null) sb.append(getNAO_INFORMADO()).append(" - ");
+       else sb.append(enderecoPet.getNumeroCasa()).append(" - ");
+       sb.append(enderecoPet.getCidade()).append(" - ");
+       if (idade == null) sb.append(getNAO_INFORMADO()).append(" - ");
+       else sb.append(idade).append(" anos - ");
+       if (peso == null) sb.append(getNAO_INFORMADO()).append(" - 2");
+       else sb.append(peso).append("kg - ");
+       sb.append(raca);
+
+       return sb.toString();
     }
 }

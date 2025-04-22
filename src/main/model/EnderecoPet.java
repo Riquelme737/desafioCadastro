@@ -10,6 +10,12 @@ public class EnderecoPet {
     public EnderecoPet() {
     }
 
+    public EnderecoPet(Integer numeroCasa, String cidade, String rua) {
+        this.numeroCasa = numeroCasa;
+        this.cidade = cidade;
+        this.rua = rua;
+    }
+
     public Integer getNumeroCasa() {
         return numeroCasa;
     }

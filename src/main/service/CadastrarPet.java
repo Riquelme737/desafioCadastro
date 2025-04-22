@@ -13,14 +13,11 @@ import static repository.FormularioLeitor.lerPerguntas;
 
 public class CadastrarPet {
 
-    private static final PetFileRepository PET_FILE_REPOSITORY = new PetFileRepository();
-
     public static void cadastrarPet() {
         Scanner scanner = new Scanner(System.in);
         Pet pet = new Pet();
         List<String> perguntas = lerPerguntas();
         EnderecoPet enderecoPet = new EnderecoPet();
-
 
         // PERGUNTA 1 - NOME E SOBRENOME
         boolean nomeValido = false;
@@ -183,7 +180,7 @@ public class CadastrarPet {
             }
         }
 
-        PET_FILE_REPOSITORY.salvarPet(pet);
+        PetFileRepository.salvarPet(pet);
         System.out.println("O seu pet foi cadastrado com sucesso.");
         System.out.println("------------------------------------------------------------------------------------");
 

@@ -1,5 +1,6 @@
 package cli;
 
+import service.AtualizarPet;
 import service.BuscarPet;
 import service.CadastrarPet;
 
@@ -26,34 +27,26 @@ public class Menu {
 
             if (scanner.hasNextInt()) {
                 resp = scanner.nextInt();
-
                 if (resp >= 1 && resp <= 6) {
                     flag = true;
                 }
-
             } else {
                 System.err.println("Por favor, insira um número");
                 scanner.nextLine();
             }
-
         }
-
         return resp;
     }
 
-
-
-
     public static void menuPrincipal() {
         boolean flag = false;
-
         while (!flag) {
             switch (rodarMenu()) {
                 case 1:
                     CadastrarPet.cadastrarPet();
                     break;
                 case 2:
-                    BuscarPet.menu();
+                    AtualizarPet.atualizarPet();
                     break;
                 case 6:
                     System.out.println("Obrigado!");
