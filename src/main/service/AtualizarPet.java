@@ -27,28 +27,37 @@ public class AtualizarPet {
 
         if (id >= 1 && id <= pets.size()) {
             Pet petSelecionado = pets.get(id - 1);
-            EnderecoPet enderecoPet = new EnderecoPet();
+            EnderecoPet enderecoPet = petSelecionado.getEnderecoPet();
+
+            if (enderecoPet == null) {
+                enderecoPet = new EnderecoPet();
+                petSelecionado.setEnderecoPet(enderecoPet);
+            }
 
             try {
                 atualizarAtributo("Novo nome",
                         ValidacoesUtils::validarNomeCompleto,
                         petSelecionado::setNome);
 
-                atualizarAtributo("Nova cidade",
-                        PetService::validarRua_Cidade,
-                        enderecoPet::setCidade);
-
                 atualizarAtributo("Nova rua",
                         PetService::validarRua_Cidade,
                         enderecoPet::setRua);
 
                 atualizarAtributo("Novo número de casa",
-                        input -> ValidacoesUtils.validarNumeroPositivo(Integer.parseInt(input)),
+                        numCasa -> ValidacoesUtils.validarNumeroPositivo(Integer.parseInt(numCasa)),
                         enderecoPet::setNumeroCasa);
                 petSelecionado.setEnderecoPet(enderecoPet);
 
+                atualizarAtributo("Nova cidade",
+                        PetService::validarRua_Cidade,
+                        enderecoPet::setCidade);
+
+                atualizarAtributo("Nova idade",
+                        idade -> PetService.validarIdade(Integer.parseInt(idade)),
+                        petSelecionado::setIdade);
+
                 atualizarAtributo("Novo peso",
-                        input -> PetService.validarPeso(Double.parseDouble(input)),
+                        peso -> PetService.validarPeso(Double.parseDouble(peso)),
                         petSelecionado::setPeso);
 
                 atualizarAtributo("Nova raça",
@@ -63,11 +72,10 @@ public class AtualizarPet {
         }
     }
 
-    private static <T> void atualizarAtributo(String mensagem, Function<String, T> validador, Consumer<T> setter) {
+    private static <T> void atualizarAtributo(String mensagem, Function<String, T> validator, Consumer<T> setter) {
         System.out.print(mensagem + "? (s/n): ");
 
         String resp = Constantes.scanner.nextLine();
-
 
         if (resp.startsWith("s")) {
             System.out.println("Digite " + mensagem.toLowerCase() + ":");
@@ -76,7 +84,7 @@ public class AtualizarPet {
             String input = Constantes.scanner.nextLine();
 
             try {
-                T valorValidado = validador.apply(input);
+                T valorValidado = validator.apply(input);
                 setter.accept(valorValidado);
                 System.out.println(mensagem + " atualizado com sucesso!");
             } catch (IllegalArgumentException | NullPointerException e) {
@@ -84,4 +92,6 @@ public class AtualizarPet {
             }
         }
     }
+
+
 }
