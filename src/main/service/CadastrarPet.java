@@ -97,7 +97,6 @@ public class CadastrarPet {
 
                 if (numeroCasaString.isBlank()) {
                     enderecoPet.setNumeroCasa(null);
-                    enderecoValido = true;
                 } else {
                     enderecoPet.setNumeroCasa(Integer.valueOf(numeroCasaString));
                 }

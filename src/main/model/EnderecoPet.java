@@ -1,5 +1,6 @@
 package model;
 
+import service.PetService;
 import util.ValidacoesUtils;
 
 public class EnderecoPet {
@@ -8,12 +9,6 @@ public class EnderecoPet {
     private String rua;
 
     public EnderecoPet() {
-    }
-
-    public EnderecoPet(Integer numeroCasa, String cidade, String rua) {
-        this.numeroCasa = numeroCasa;
-        this.cidade = cidade;
-        this.rua = rua;
     }
 
     public Integer getNumeroCasa() {
@@ -36,10 +31,12 @@ public class EnderecoPet {
     }
 
     public void setCidade(String cidade) {
+        PetService.validarRua_Cidade(cidade);
         this.cidade = cidade;
     }
 
     public void setRua(String rua) {
+        PetService.validarRua_Cidade(rua);
         this.rua = rua;
     }
 

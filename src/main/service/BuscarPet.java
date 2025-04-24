@@ -57,8 +57,19 @@ public class BuscarPet {
                 }
             }
         }
+
+        atribuirIdsParaListagem(petList);
         return petList;
     }
+
+    public static void atribuirIdsParaListagem(List<Pet> pets) {
+        Pet.resetProximoId();
+
+        for(Pet pet : pets) {
+            pet.atribuirProximoId();
+        }
+    }
+
 
     public static List<Pet> aplicarFiltro(List<Pet> petList, int criterio) {
         switch (criterio) {
@@ -125,7 +136,6 @@ public class BuscarPet {
                     if (escolha == 1) {
                         System.out.println("Nome da rua");
                         System.out.print(">>> ");
-                        scanner.nextLine();
                         String rua = scanner.nextLine();
                         return petList.stream()
                                 .filter(pet -> pet.getEnderecoPet().getRua().contains(rua))

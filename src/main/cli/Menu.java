@@ -1,8 +1,8 @@
 package cli;
 
 import service.AtualizarPet;
-import service.BuscarPet;
 import service.CadastrarPet;
+import service.DeletarPet;
 
 import java.util.Scanner;
 
@@ -47,6 +47,9 @@ public class Menu {
                     break;
                 case 2:
                     AtualizarPet.atualizarPet();
+                    break;
+                case 3:
+                    DeletarPet.deletarPet();
                     break;
                 case 6:
                     System.out.println("Obrigado!");

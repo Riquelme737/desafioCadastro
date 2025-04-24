@@ -14,12 +14,10 @@ public class Pet {
     private Integer idade;
     private Double peso;
     private String raca;
-    private final int id;
+    private  int id;
     private static int proximoId = 1;
 
-
     public Pet() {
-        this.id = proximoId++;
     }
 
     public String getNAO_INFORMADO() {
@@ -91,6 +89,13 @@ public class Pet {
         this.raca = raca;
     }
 
+    public void atribuirProximoId() {
+        this.id = proximoId++;
+    }
+
+    public static void resetProximoId() {
+        proximoId = 1;
+    }
 
     public String toFileFormat() {
         StringBuilder sb = new StringBuilder();

@@ -2,7 +2,6 @@ package cli;
 
 import model.Pet;
 import model.enums.Tipo;
-import service.BuscarPet;
 import service.PetService;
 import util.ValidacoesUtils;
 
@@ -26,15 +25,15 @@ public class BuscarPetUI {
         System.out.print(">>> ");
     }
 
-    public static void menu() {
+    public static List<Pet> menu() {
         System.out.println("Cachorro ou Gato?");
         System.out.print(">>> ");
-        String tipoCriterio;
+        String tipoCriterio = "";
         try {
             tipoCriterio = PetService.validarTipoPet(scanner.nextLine());
         } catch (IllegalArgumentException e) {
             System.err.println("Erro: " + e.getMessage());
-            return;
+
         }
 
         Tipo tipo;
@@ -43,7 +42,7 @@ public class BuscarPetUI {
         } else if (tipoCriterio.equalsIgnoreCase("gato")) {
             tipo = Tipo.GATO;
         } else {
-            return;
+            tipo = null;
         }
 
         List<Pet> listaPetFiltrada = buscarPets().stream()
@@ -59,10 +58,11 @@ public class BuscarPetUI {
             } catch (InputMismatchException | IllegalArgumentException e) {
                 System.err.println("Digite apenas números, por favor.");
                 scanner.nextLine();
-                return;
             }
         }
 
+        atribuirIdsParaListagem(listaPetFiltrada);
         listaPetFiltrada.forEach(System.out::println);
+        return listaPetFiltrada;
     }
 }
