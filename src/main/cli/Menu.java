@@ -6,6 +6,9 @@ import service.DeletarPet;
 
 import java.util.Scanner;
 
+import static service.ListarPets.listarPets;
+import static service.ListarPets.menu;
+
 public class Menu {
     private final static Scanner scanner = new Scanner(System.in);
 
@@ -50,6 +53,13 @@ public class Menu {
                     break;
                 case 3:
                     DeletarPet.deletarPet();
+                    break;
+                case 4:
+                    listarPets();
+                    break;
+                case 5:
+                    int criterio = menu();
+                    listarPets(criterio);
                     break;
                 case 6:
                     System.out.println("Obrigado!");
