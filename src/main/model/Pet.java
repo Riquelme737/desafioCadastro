@@ -1,8 +1,9 @@
 package model;
 
+
 import model.enums.Sexo;
 import model.enums.Tipo;
-import service.PetService;
+
 import util.ValidacoesUtils;
 
 public class Pet {
@@ -20,7 +21,7 @@ public class Pet {
     public Pet() {
     }
 
-    public String getNAO_INFORMADO() {
+    public String NAO_INFORMADO() {
         return "Não informado";
     }
 
@@ -54,8 +55,8 @@ public class Pet {
 
     public int getId() { return id;}
 
-    public void setNome(String nome) {
-        ValidacoesUtils.validarNomeCompleto(nome);
+    public void setNome(String nome){
+        nome = ValidacoesUtils.validarNomeCompleto(nome);
         this.nome = nome;
     }
 
@@ -72,20 +73,17 @@ public class Pet {
     }
 
     public void setIdade(Integer idade) {
-        if (idade != null) {
-            PetService.validarIdade(idade);
-        }
+        if (idade != -1) idade = ValidacoesUtils.validarIdade(idade);
         this.idade = idade;
     }
 
     public void setPeso(Double peso) {
-        if (peso != null) {
-            PetService.validarPeso(peso);
-        }
+        if (peso != -1) peso = ValidacoesUtils.validarPeso(peso);
         this.peso = peso;
     }
 
     public void setRaca(String raca) {
+        raca = ValidacoesUtils.validarRaca(raca);
         this.raca = raca;
     }
 
@@ -107,8 +105,8 @@ public class Pet {
 
         sb.append("4 - ");
         sb.append(getEnderecoPet().getRua()).append(", ");
-        if (getEnderecoPet().getNumeroCasa() == null) {
-            sb.append(getNAO_INFORMADO());
+        if (getEnderecoPet().getNumeroCasa() == -1) {
+            sb.append(NAO_INFORMADO());
         } else {
             sb.append(getEnderecoPet().getNumeroCasa());
         }
@@ -116,11 +114,11 @@ public class Pet {
         sb.append(getEnderecoPet().getCidade()).append("\n");
 
         sb.append("5 - ");
-        if (getIdade() == null) sb.append(getNAO_INFORMADO()).append("\n");
+        if (getIdade() == -1) sb.append(NAO_INFORMADO()).append("\n");
         else sb.append(getIdade()).append(" anos").append("\n");
 
         sb.append("6 - ");
-        if (getPeso() == null) sb.append(getNAO_INFORMADO()).append("\n");
+        if (getPeso() == -1) sb.append(NAO_INFORMADO()).append("\n");
         else sb.append(getPeso()).append("kg").append("\n");
 
         sb.append("7 - ").append(getRaca()).append("\n");
@@ -136,22 +134,77 @@ public class Pet {
        sb.append(tipo.getNome()).append(" - ");
        sb.append(sexo.getNome()).append(" - ");
 
-       if (enderecoPet.getRua() == null) sb.append(getEnderecoPet().getRua());
-       else sb.append(enderecoPet.getRua()).append(", ");
+       sb.append(enderecoPet.getRua()).append(", ");
 
-       if (enderecoPet.getNumeroCasa() == null) sb.append(getNAO_INFORMADO()).append(" - ");
+       if (enderecoPet.getNumeroCasa() == -1) sb.append(NAO_INFORMADO()).append(" - ");
        else sb.append(enderecoPet.getNumeroCasa()).append(" - ");
 
-       if (enderecoPet.getCidade() == null) sb.append(getEnderecoPet().getCidade());
-       else sb.append(enderecoPet.getCidade()).append(" - ");
+       sb.append(enderecoPet.getCidade()).append(" - ");
 
-
-       if (idade == null) sb.append(getNAO_INFORMADO()).append(" - ");
+       if (idade == -1) sb.append(NAO_INFORMADO()).append(" - ");
        else sb.append(idade).append(" anos - ");
-       if (peso == null) sb.append(getNAO_INFORMADO()).append(" - ");
+       if (peso == -1) sb.append(NAO_INFORMADO()).append(" - ");
        else sb.append(peso).append("kg - ");
        sb.append(raca);
 
        return sb.toString();
+    }
+
+    public static class Builder {
+        private String nome;
+        private Tipo tipo;
+        private Sexo sexo;
+        private EnderecoPet enderecoPet;
+        private Integer idade;
+        private Double peso;
+        private String raca;
+
+        public Builder setNome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder setTipo(Tipo tipo) {
+            this.tipo = tipo;
+            return this;
+        }
+
+        public Builder setSexo(Sexo sexo) {
+            this.sexo = sexo;
+            return this;
+        }
+
+        public Builder setEnderecoPet(EnderecoPet enderecoPet) {
+            this.enderecoPet = enderecoPet;
+            return this;
+        }
+
+        public Builder setIdade(Integer idade) {
+            this.idade = idade;
+            return this;
+        }
+
+        public Builder setPeso(Double peso) {
+            this.peso = peso;
+            return this;
+        }
+
+        public Builder setRaca(String raca) {
+            this.raca = raca;
+            return this;
+        }
+
+        public Pet build() {
+            Pet pet = new Pet();
+            pet.nome = this.nome;
+            pet.tipo= this.tipo;
+            pet.sexo = this.sexo;
+            pet.enderecoPet = this.enderecoPet;
+            pet.idade = this.idade;
+            pet.peso = this.peso;
+            pet.raca = this.raca;
+            pet.atribuirProximoId();
+            return pet;
+        }
     }
 }

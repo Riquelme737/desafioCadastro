@@ -17,6 +17,7 @@ public class PetFileRepository {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(arquivo))) {
             bufferedWriter.write(pet.toFileFormat());
             System.out.println("\n✅ Pet cadastrado com sucesso!");
+            System.out.println("------------------------------------------------------------------------------------");
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar pet no arquivo: " + nomeArquivo, e);
         }

@@ -1,5 +1,6 @@
 package service;
 
+import exception.ValidationException;
 import model.EnderecoPet;
 import model.Pet;
 import model.enums.Sexo;
@@ -14,10 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
+
 
 public class BuscarPet {
-    private final static Scanner scanner = new Scanner(System.in);
 
     public static List<Pet> buscarPets() {
         File[] arquivo = new File(Constantes.PETS_CADASTRADOS).listFiles(nome -> nome.getName().endsWith(".TXT"));
@@ -40,15 +40,15 @@ public class BuscarPet {
 
                     String[] enderecoPartes = endereco.split(", ");
                     enderecoPet.setRua(enderecoPartes[0].trim());
-                    enderecoPet.setNumeroCasa(!enderecoPartes[1].equalsIgnoreCase("Não informado") ? Integer.valueOf(enderecoPartes[1]) : null);
+                    enderecoPet.setNumeroCasa(!enderecoPartes[1].equalsIgnoreCase("Não informado") ? Integer.parseInt(enderecoPartes[1]) : -1);
                     enderecoPet.setCidade(enderecoPartes[2]);
                     pet.setEnderecoPet(enderecoPet);
                     pet.setNome(nome);
                     pet.setTipo(Tipo.valueOf(especie.toUpperCase()));
                     pet.setSexo(Sexo.valueOf(genero.toUpperCase()));
 
-                    pet.setIdade(!idade.equalsIgnoreCase("Não informado") ? Integer.valueOf(idade.split(" ")[0]) : null);
-                    pet.setPeso(!peso.equalsIgnoreCase("Não informado") ? Double.valueOf(peso.split("kg")[0]) : null);
+                    pet.setIdade(!idade.equalsIgnoreCase("Não informado") ? Integer.parseInt(idade.split(" ")[0]) : -1);
+                    pet.setPeso(!peso.equalsIgnoreCase("Não informado") ? Double.parseDouble(peso.split("kg")[0]) : -1);
                     pet.setRaca(raca);
 
                     petList.add(pet);
@@ -62,21 +62,13 @@ public class BuscarPet {
         return petList;
     }
 
-    public static void atribuirIdsParaListagem(List<Pet> pets) {
-        Pet.resetProximoId();
-
-        for(Pet pet : pets) {
-            pet.atribuirProximoId();
-        }
-    }
-
-
-    public static List<Pet> aplicarFiltro(List<Pet> petList, int criterio) {
+    public static List<Pet> aplicarFiltro(List<Pet> petList, int criterio) throws ValidationException {
+        Constantes.scanner.nextLine();
         switch (criterio) {
             case 1:
                 System.out.println("Digite o nome ou sobrenome do pet");
                 System.out.print(">>> ");
-                String nomeFiltro = scanner.nextLine().trim().toLowerCase();
+                String nomeFiltro = Constantes.scanner.nextLine().trim().toLowerCase();
                 return petList.stream()
                         .filter(pet -> pet.getNome().toLowerCase().trim().contains(nomeFiltro))
                         .toList();
@@ -84,23 +76,22 @@ public class BuscarPet {
             case 2:
                 System.out.println("Digite o sexo do pet");
                 System.out.print(">>> ");
-                String sexo = scanner.nextLine().trim();
+                Sexo genero = ValidacoesUtils.validarSexoPet(Constantes.scanner.nextLine());
                 return petList.stream()
-                        .filter(pet -> pet.getSexo().getNome().equalsIgnoreCase(sexo))
+                        .filter(pet -> pet.getSexo().equals(genero))
                         .toList();
 
             case 3:
                 System.out.println("Digite a idade do pet");
                 System.out.print(">>> ");
                 try {
-                    int idadeFiltro = ValidacoesUtils.validarNumeroPositivo(scanner.nextInt());
-                    scanner.nextLine();
+                    int idadeFiltro = ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
                     return petList.stream()
                             .filter(pet -> pet.getIdade() == idadeFiltro)
                             .toList();
                 } catch (InputMismatchException | IllegalArgumentException e) {
                     System.err.println("Erro: " + e.getMessage());
-                    scanner.nextLine();
+                    Constantes.scanner.nextLine();
                     return petList;
                 }
 
@@ -108,19 +99,19 @@ public class BuscarPet {
                 System.out.println("Digite o peso do pet");
                 System.out.print(">>> ");
                 try {
-                    double peso = scanner.nextDouble();
+                    double peso = ValidacoesUtils.validarPeso(Constantes.scanner.nextDouble());
                     return petList.stream()
                             .filter(pet -> pet.getPeso() == peso)
                             .toList();
                 } catch (InputMismatchException | IllegalArgumentException e) {
                     System.err.println("Erro: " + e.getMessage());
-                    scanner.nextLine();
+                    Constantes.scanner.nextLine();
                     return petList;
                 }
             case 5:
                 System.out.println("Digite a raça do pet");
                 System.out.print(">>> ");
-                String raca = scanner.nextLine();
+                String raca = ValidacoesUtils.validarRaca(Constantes.scanner.nextLine());
                 return petList.stream()
                         .filter(pet -> pet.getRaca().equalsIgnoreCase(raca))
                         .toList();
@@ -131,21 +122,20 @@ public class BuscarPet {
                 System.out.println("[3] Cidade");
                 System.out.print(">>> ");
                 try {
-                    int escolha = ValidacoesUtils.validarNumeroPositivo(scanner.nextInt());
-                    scanner.nextLine();
+                    int escolha = ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
+                    Constantes.scanner.nextLine();
                     if (escolha == 1) {
                         System.out.println("Nome da rua");
                         System.out.print(">>> ");
-                        String rua = scanner.nextLine();
+                        String rua = ValidacoesUtils.validarRua_Cidade(Constantes.scanner.nextLine().trim());
                         return petList.stream()
-                                .filter(pet -> pet.getEnderecoPet().getRua().contains(rua))
+                                .filter(pet -> pet.getEnderecoPet().getRua().trim().contains(rua))
                                 .toList();
 
                     } else if (escolha == 2) {
                         System.out.println("Número da casa");
                         System.out.print(">>> ");
-                        scanner.nextLine();
-                        int numeroCasa = scanner.nextInt();
+                        int numeroCasa = ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
                         return petList.stream()
                                 .filter(pet -> pet.getEnderecoPet().getNumeroCasa() == numeroCasa)
                                 .toList();
@@ -153,8 +143,7 @@ public class BuscarPet {
                     } else if (escolha == 3) {
                         System.out.println("Nome da cidade");
                         System.out.print(">>> ");
-                        scanner.nextLine();
-                        String cidade = scanner.nextLine();
+                        String cidade = ValidacoesUtils.validarRua_Cidade(Constantes.scanner.nextLine().trim());
                         return petList.stream()
                                 .filter(pet -> pet.getEnderecoPet().getCidade().contains(cidade))
                                 .toList();
@@ -162,7 +151,7 @@ public class BuscarPet {
                     }
                 } catch (InputMismatchException | IllegalArgumentException e) {
                     System.err.println("Erro: " + e.getMessage());
-                    scanner.nextLine();
+                    Constantes.scanner.nextLine();
                     return petList;
                 }
             default:
@@ -170,4 +159,11 @@ public class BuscarPet {
         }
     }
 
+    public static void atribuirIdsParaListagem(List<Pet> pets) {
+        Pet.resetProximoId();
+
+        for(Pet pet : pets) {
+            pet.atribuirProximoId();
+        }
+    }
 }

@@ -1,8 +1,11 @@
 package cli;
 
+import exception.ValidationException;
 import model.Pet;
 import model.enums.Tipo;
 import service.PetService;
+import util.Constantes;
+import util.Style;
 import util.ValidacoesUtils;
 
 import java.util.InputMismatchException;
@@ -14,7 +17,8 @@ import static service.BuscarPet.*;
 public class BuscarPetUI {
     private static final Scanner scanner = new Scanner(System.in);
 
-    private static void opcoesCriterios() {
+    private static int opcoesCriterios() {
+        Style.travessao(30);
         System.out.println("[1] Nome ou sobrenome");
         System.out.println("[2] Sexo");
         System.out.println("[3] Idade");
@@ -23,6 +27,9 @@ public class BuscarPetUI {
         System.out.println("[6] Endereço");
         System.out.println("[0] Nenhuma das opções");
         System.out.print(">>> ");
+        int opcao = ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
+        Style.travessao(30);
+        return opcao;
     }
 
     public static List<Pet> menu() {
@@ -51,11 +58,9 @@ public class BuscarPetUI {
 
         for (int i = 0; i < 2; i++) {
             try {
-                opcoesCriterios();
-                int criterio = ValidacoesUtils.validarNumeroPositivo(scanner.nextInt());
-                scanner.nextLine();
+                int criterio = ValidacoesUtils.validarNumeroPositivo(opcoesCriterios());
                 listaPetFiltrada = aplicarFiltro(listaPetFiltrada, criterio);
-            } catch (InputMismatchException | IllegalArgumentException e) {
+            } catch (InputMismatchException | ValidationException | IllegalArgumentException e) {
                 System.err.println("Digite apenas números, por favor.");
                 scanner.nextLine();
             }

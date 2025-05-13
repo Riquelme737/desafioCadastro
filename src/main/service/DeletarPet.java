@@ -12,25 +12,23 @@ import java.io.IOException;
 import java.util.List;
 
 public class DeletarPet {
-    private static List<Pet> pets = BuscarPet.buscarPets();
 
     public static void deletarPet() {
-        BuscarPetUI.menu();
-
+        List<Pet> petList = BuscarPetUI.menu();
         System.out.println("Qual id?");
         System.out.print(">>> ");
         int id = ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
         Constantes.scanner.nextLine();
 
         Pet petParaExcluir = null;
-        for (Pet pet : pets) {
+        for (Pet pet : petList) {
             if (pet.getId() == id) {
                 petParaExcluir = pet;
                 break;
             }
         }
 
-        System.out.println("Você está prestes a excluir o pet: ");
+        System.out.println();
         System.out.println(petParaExcluir.toString());
         System.out.print("Deseja realmente continuar? Digite corretamente 'SIM' ou 'NÃO': ");
         String confirmacao = Constantes.scanner.nextLine();
@@ -47,6 +45,8 @@ public class DeletarPet {
         } else {
             System.out.println("Não foi possível localizar o arquivo do pet para exclusão");
         }
+
+
     }
 
     public static void deletarPet(Pet petParaExcluir) {

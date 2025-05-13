@@ -4,6 +4,7 @@ import model.Pet;
 import model.enums.Sexo;
 import model.enums.Tipo;
 import util.Constantes;
+import util.Style;
 import util.ValidacoesUtils;
 
 import java.util.List;
@@ -11,25 +12,43 @@ import java.util.List;
 public class ListarPets {
     private static List<Pet> allPets = BuscarPet.buscarPets();
 
+    public static void listarPets() {
+        Style.travessao(120);
+
+        System.out.println(allPets.size() + " Pet(s) encontrado(s):");
+        allPets.forEach(System.out::println);
+
+        Style.travessao(120);
+    }
+
+    public static void addAllPets(Pet pet) {
+        allPets.add(pet);
+    }
+
+    public static void setAllPets(List<Pet> pets) {
+        allPets = pets;
+    }
+
     public static int menu() {
+        Style.travessao(50);
         System.out.println("[1] Nome ou sobrenome");
         System.out.println("[2] Tipo");
         System.out.println("[3] Gênero");
-        System.out.println("[4] Idade");
-        System.out.println("[5] Peso");
-        System.out.println("[6] Raça");
-        return ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
+        System.out.println("[4] Endereço");
+        System.out.println("[5] Idade");
+        System.out.println("[6] Peso");
+        System.out.println("[7] Raça");
+        System.out.print(">>> ");
+        int opcao = ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
+        Style.travessao(50);
+        return opcao;
     }
 
-    public static void listarPets() {
-        allPets.forEach(System.out::println);
-    }
-
-    public static void listarPets(int criterio) {
+    public static void listarPets(int criterion) {
         Constantes.scanner.nextLine();
 
         try {
-            switch (criterio) {
+            switch (criterion) {
                 case 1:
                     System.out.println("Qual nome?");
                     System.out.print(">>> ");
@@ -45,7 +64,7 @@ public class ListarPets {
                 case 2:
                     System.out.println("Qual tipo? (Cachorro ou Gato)");
                     System.out.print(">>> ");
-                    String tipoAux = PetService.validarTipoPet(Constantes.scanner.nextLine().trim().toUpperCase());
+                    String tipoAux = Constantes.scanner.nextLine();
 
                     Tipo tipo;
                     if (tipoAux.equals("CACHORRO") || tipoAux.startsWith("C")) {
@@ -84,8 +103,48 @@ public class ListarPets {
                     }
                     break;
 
-
                 case 4:
+                    System.out.println("[1] Número da Casa");
+                    System.out.println("[2] Cidade");
+                    System.out.println("[3] Rua");
+                    System.out.print(">>> ");
+                    int opcao = Constantes.scanner.nextInt();
+                    Constantes.scanner.nextLine();
+                    if (opcao == 1) {
+                        System.out.println("Escreva o número da casa");
+                        System.out.print(">>> ");
+                        int numCasa = Constantes.scanner.nextInt();
+                        for (Pet pet : allPets) {
+                            if (pet.getEnderecoPet().getNumeroCasa() == numCasa) {
+                                System.out.println(pet);
+                            }
+                        }
+                    }
+
+                    if (opcao == 2) {
+                        System.out.println("Escreva nome da cidade");
+                        System.out.print(">>> ");
+                        String cidade = Constantes.scanner.nextLine();
+                        for (Pet pet : allPets) {
+                            if (pet.getEnderecoPet().getCidade().contains(cidade)) {
+                                System.out.println(pet);
+                            }
+                        }
+                    }
+
+                    if (opcao == 3) {
+                        System.out.println("Escreva a rua");
+                        System.out.print(">>> ");
+                        String rua = Constantes.scanner.nextLine();
+                        for (Pet pet : allPets) {
+                            if (pet.getEnderecoPet().getRua().contains(rua)) {
+                                System.out.println(pet);
+                            }
+                        }
+                    }
+                    break;
+
+                case 5:
                     System.out.println("Qual idade?");
                     System.out.print(">>> ");
                     Integer idade = PetService.validarIdade(Constantes.scanner.nextInt());
@@ -98,7 +157,7 @@ public class ListarPets {
                     break;
 
 
-                case 5:
+                case 6:
                     System.out.println("Qual peso?");
                     System.out.print(">>> ");
                     double peso = PetService.validarPeso(Constantes.scanner.nextDouble());
@@ -110,7 +169,7 @@ public class ListarPets {
                     }
                     break;
 
-                case 6:
+                case 7:
                     System.out.println("Qual raça?");
                     System.out.print(">>> ");
                     String raca = Constantes.scanner.nextLine().trim().toLowerCase();

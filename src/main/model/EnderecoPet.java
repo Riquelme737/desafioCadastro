@@ -1,6 +1,6 @@
 package model;
 
-import service.PetService;
+
 import util.ValidacoesUtils;
 
 public class EnderecoPet {
@@ -8,8 +8,13 @@ public class EnderecoPet {
     private String cidade;
     private String rua;
 
-    public EnderecoPet() {
+    public EnderecoPet(Integer numeroCasa, String cidade, String rua) {
+        this.numeroCasa = numeroCasa;
+        this.cidade = cidade;
+        this.rua = rua;
     }
+
+    public EnderecoPet() {}
 
     public Integer getNumeroCasa() {
         return numeroCasa;
@@ -24,19 +29,17 @@ public class EnderecoPet {
     }
 
     public void setNumeroCasa(Integer numeroCasa) {
-        if (numeroCasa != null) {
-            ValidacoesUtils.validarNumeroPositivo(numeroCasa);
-        }
+        if (numeroCasa != -1) numeroCasa = ValidacoesUtils.validarNumeroPositivo(numeroCasa);
         this.numeroCasa = numeroCasa;
     }
 
     public void setCidade(String cidade) {
-        PetService.validarRua_Cidade(cidade);
+        cidade = ValidacoesUtils.validarRua_Cidade(cidade);
         this.cidade = cidade;
     }
 
     public void setRua(String rua) {
-        PetService.validarRua_Cidade(rua);
+        rua = ValidacoesUtils.validarRua_Cidade(rua);
         this.rua = rua;
     }
 

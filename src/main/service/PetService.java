@@ -1,22 +1,25 @@
 package service;
 
+
+
 public class PetService {
 
     public static String validarTipoPet(String petTipo) {
-        String primeiraLetra = petTipo.toLowerCase();
-        if (!(primeiraLetra.startsWith("c") || primeiraLetra.startsWith("g")
-                || primeiraLetra.equals("cachorro") || primeiraLetra.equals("gato"))) {
+        String petNome = petTipo.toUpperCase();
+        if (!(petNome.startsWith("C") || petNome.startsWith("G")
+                || petNome.equals("CACHORRO") || petNome.equals("GATO"))) {
             throw new IllegalArgumentException("Tipo inválido. Apenas cachorro ou gato!");
         }
         return petTipo;
     }
 
-    public static void validarSexoPet(String petSexo) {
+    public static String validarSexoPet(String petSexo) {
         String primeiraLetra = petSexo.toLowerCase();
         if (!(primeiraLetra.startsWith("m") || primeiraLetra.equals("f")
                 || primeiraLetra.equals("macho") || primeiraLetra.equals("femea"))) {
             throw new IllegalArgumentException("Sexo inválido. Apenas macho ou femea!");
         }
+        return petSexo;
     }
 
     public static Double validarPeso(double petPeso) {
