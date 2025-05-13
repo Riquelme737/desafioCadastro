@@ -15,6 +15,12 @@ public class DeletarPet {
 
     public static void deletarPet() {
         List<Pet> petList = BuscarPetUI.menu();
+
+        if (petList.isEmpty()) {
+            System.err.println("Lista de pets cadastrados está vazia.");
+            return;
+        }
+
         System.out.println("Qual id?");
         System.out.print(">>> ");
         int id = ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
@@ -29,7 +35,7 @@ public class DeletarPet {
         }
 
         System.out.println();
-        System.out.println(petParaExcluir.toString());
+        System.out.println(petParaExcluir);
         System.out.print("Deseja realmente continuar? Digite corretamente 'SIM' ou 'NÃO': ");
         String confirmacao = Constantes.scanner.nextLine();
 

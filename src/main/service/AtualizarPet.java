@@ -1,6 +1,5 @@
 package service;
 
-import exception.ValidationException;
 import model.EnderecoPet;
 import model.Pet;
 import repository.PetFileRepository;
@@ -20,6 +19,14 @@ public class AtualizarPet {
         System.out.println("[2] - Escolher algum critério");
         int opcao = ValidacoesUtils.validarNumeroPositivo(Constantes.scanner.nextInt());
 
+
+        List<Pet> allPets = BuscarPet.buscarPets();
+
+        if (allPets.isEmpty()) {
+            System.out.println("A lista de pets cadastrados está vazia.");
+            return;
+        }
+
         if (opcao == 1) {
             ListarPets.listarPets();
         } else if (opcao == 2) {
@@ -30,7 +37,7 @@ public class AtualizarPet {
             return;
         }
 
-        List<Pet> allPets = BuscarPet.buscarPets();
+
 
         System.out.println("Digite o ID do pet");
         System.out.print(">>> ");
@@ -71,7 +78,7 @@ public class AtualizarPet {
 
     }
 
-    private static <T> void atualizarAtributo(String mensagem, Consumer<String> setter){
+    private static void atualizarAtributo(String mensagem, Consumer<String> setter){
         System.out.print(mensagem + "? (s/n): ");
 
         String resp = Constantes.scanner.nextLine();
